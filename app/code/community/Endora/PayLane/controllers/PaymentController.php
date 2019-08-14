@@ -87,7 +87,7 @@ class Endora_PayLane_PaymentController extends Mage_Core_Controller_Front_Action
                     $error = true;
             }
         } else {
-            $orderStatus = Mage_Core_Sales_Order::STATE_HOLDED;
+            $orderStatus = Mage_Sales_Model_Order::STATE_HOLDED;
             $error = true;
         }
         
