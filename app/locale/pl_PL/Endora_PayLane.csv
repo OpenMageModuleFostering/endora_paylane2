@@ -28,7 +28,6 @@
 "Enable logging","Logowanie aktywne"
 "Log will be able in /var/log/paylane.log","Plik logów będzie dostępny w /var/log/paylane-notifications.log"
 "Log will be able in /var/log/paylane.log","Plik logów będzie dostępny w /var/log/paylane.log"
-"Hash salt","Sól hashu"
 "URL that handles automatic notifications","URL do obsługi automatycznych powiadomień"
 "Notification Token","Token dla powiadomień"
 "If you want to handle automatic notifications in your store, you have to inform PayLane support about that URL","Jeśli chcesz korzystać z automatycznych powiadomień musisz poinformować PayLane o tym adresie URL"

@@ -226,14 +226,14 @@
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>1</show_in_store>
                                 </title>
-                                <hash_salt translate="label">
+<!--                                <hash_salt translate="label">
                                     <label>Hash salt</label>
                                     <frontend_type>text</frontend_type>
                                     <sort_order>25</sort_order>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
-                                </hash_salt>
+                                </hash_salt>-->
                                 <username translate="label comment" module="paylane">
                                     <label>Username</label>
                                     <comment><![CDATA[Get from <a href="http://merchant.paylane.com" target="_blank">http://merchant.paylane.com</a>]]></comment>
@@ -353,14 +353,14 @@
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>1</show_in_store>
                                 </title>
-                                <hash_salt translate="label">
+<!--                                <hash_salt translate="label">
                                     <label>Hash salt</label>
                                     <frontend_type>text</frontend_type>
                                     <sort_order>25</sort_order>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
-                                </hash_salt>
+                                </hash_salt>-->
                                 <username translate="label comment" module="paylane">
                                     <label>API Username</label>
                                     <comment><![CDATA[Get from <a href="http://merchant.paylane.com" target="_blank">http://merchant.paylane.com</a>]]></comment>
@@ -407,14 +407,14 @@
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>1</show_in_store>
                                 </title>
-                                <hash_salt translate="label">
+<!--                                <hash_salt translate="label">
                                     <label>Hash salt</label>
                                     <frontend_type>text</frontend_type>
                                     <sort_order>25</sort_order>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
-                                </hash_salt>
+                                </hash_salt>-->
                                 <username translate="label comment" module="paylane">
                                     <label>API Username</label>
                                     <comment><![CDATA[Get from <a href="http://merchant.paylane.com" target="_blank">http://merchant.paylane.com</a>]]></comment>
@@ -461,14 +461,14 @@
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>1</show_in_store>
                                 </title>
-                                <hash_salt translate="label">
+<!--                                <hash_salt translate="label">
                                     <label>Hash salt</label>
                                     <frontend_type>text</frontend_type>
                                     <sort_order>25</sort_order>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
-                                </hash_salt>
+                                </hash_salt>-->
                                 <username translate="label comment" module="paylane">
                                     <label>API Username</label>
                                     <comment><![CDATA[Get from <a href="http://merchant.paylane.com" target="_blank">http://merchant.paylane.com</a>]]></comment>
@@ -515,14 +515,14 @@
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>1</show_in_store>
                                 </title>
-                                <hash_salt translate="label">
+<!--                                <hash_salt translate="label">
                                     <label>Hash salt</label>
                                     <frontend_type>text</frontend_type>
                                     <sort_order>25</sort_order>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
-                                </hash_salt>
+                                </hash_salt>-->
                                 <username translate="label comment" module="paylane">
                                     <label>API Username</label>
                                     <comment><![CDATA[Get from <a href="http://merchant.paylane.com" target="_blank">http://merchant.paylane.com</a>]]></comment>
@@ -569,14 +569,14 @@
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>1</show_in_store>
                                 </title>
-                                <hash_salt translate="label">
+<!--                                <hash_salt translate="label">
                                     <label>Hash salt</label>
                                     <frontend_type>text</frontend_type>
                                     <sort_order>25</sort_order>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
-                                </hash_salt>
+                                </hash_salt>-->
                                 <username translate="label comment" module="paylane">
                                     <label>API Username</label>
                                     <comment><![CDATA[Get from <a href="http://merchant.paylane.com" target="_blank">http://merchant.paylane.com</a>]]></comment>
