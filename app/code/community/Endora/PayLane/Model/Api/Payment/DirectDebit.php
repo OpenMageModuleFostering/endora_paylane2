@@ -20,7 +20,11 @@ class Endora_PayLane_Model_Api_Payment_DirectDebit extends Endora_PayLane_Model_
         $data['back_url'] = Mage::getUrl(self::RETURN_URL_PATH, array('_secure' => true));
         $data['account'] = $params;
         
+        $helper->log('send data for direct debit payment channel:');
+        $helper->log($data);
         $result = $client->directDebitSale($data);
+        $helper->log('Received response from PayLane:');
+        $helper->log($result);
         
         if($result['success']) {
             $orderStatus = $helper->getPerformedOrderStatus();
@@ -37,7 +41,14 @@ class Endora_PayLane_Model_Api_Payment_DirectDebit extends Endora_PayLane_Model_
             $comment = $helper->__('There was an error in payment process via PayLane module (Error code: %s, Error text: %s)', $errorCode, $errorText);
         }
         
-        $order->setState($helper->getStateByStatus($orderStatus), $orderStatus, $comment, false);
+        $state = $helper->getStateByStatus($orderStatus);
+        
+        $helper->log('order data changing: ');
+        $helper->log('order status: ' .$orderStatus);
+        $helper->log('order state: ' .$state);
+        $helper->log('comment: ' . $comment);
+        
+        $order->setState($state, $orderStatus, $comment, false);
         $order->save();
         
         return $result['success'];

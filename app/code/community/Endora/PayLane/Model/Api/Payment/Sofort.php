@@ -18,7 +18,11 @@ class Endora_PayLane_Model_Api_Payment_Sofort extends Endora_PayLane_Model_Api_P
         $data['customer'] = $this->_prepareCustomerData($order);
         $data['back_url'] = Mage::getUrl(self::RETURN_URL_PATH, array('_secure' => true));
         
+        $helper->log('send data for sofort payment channel:');
+        $helper->log($data);
         $result = $client->sofortSale($data);
+        $helper->log('Received response from PayLane:');
+        $helper->log($result);
         
         //probably should be in externalUrlResponseAction
         if($result['success']) {
@@ -33,7 +37,14 @@ class Endora_PayLane_Model_Api_Payment_Sofort extends Endora_PayLane_Model_Api_P
                 $errorText = (!empty($result['error']['error_description'])) ? $result['error']['error_description'] : '';
             }
             $comment = $helper->__('There was an error in payment process via PayLane module (Error code: %s, Error text: %s)', $errorCode, $errorText);
-            $order->setState($helper->getStateByStatus($orderStatus), $orderStatus, $comment, false);
+            $state = $helper->getStateByStatus($orderStatus);
+        
+            $helper->log('order data changing: ');
+            $helper->log('order status: ' .$orderStatus);
+            $helper->log('order state: ' .$state);
+            $helper->log('comment: ' . $comment);
+            
+            $order->setState($state, $orderStatus, $comment, false);
             $order->save();
         }
         

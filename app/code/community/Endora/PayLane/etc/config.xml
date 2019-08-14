@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Endora_PayLane>
-            <version>0.1.0</version>
+            <version>0.1.1</version>
         </Endora_PayLane>
     </modules>
     <global>
@@ -80,17 +80,6 @@
             </updates>
         </layout>
     </frontend>
-    <admin>
-        <routers>
-            <paylane>
-                <use>admin</use>
-                <args>
-                    <module>Endora_PayLane</module>
-                    <frontName>paylane</frontName>
-                </args>
-            </paylane>
-        </routers>
-    </admin>
     <adminhtml>
         <acl>
             <resources>

@@ -5,15 +5,17 @@
  * @author Michał Zabielski <michal.zabielski@endora.pl> http://www.endora.pl
  */
 class Endora_PayLane_Helper_Data extends Mage_Core_Helper_Data {
+    const LOG_FILE_NAME = 'paylane.log';
+    const XML_CONFIG_LOG_ENABLED = 'payment/paylane/enable_log';
     const XML_CONFIG_SEND_CUSTOMER_DATA = 'payment/paylane_secureform/send_customer_data';
     const XML_CONFIG_MERCHANT_ID = 'payment/paylane_secureform/merchant_id';
     const XML_CONFIG_HASH_SALT = 'payment/paylane_general/hash_salt';
     const XML_CONFIG_GATEWAY_TYPE = 'payment/paylane/gateway_type';
     const XML_CONFIG_REDIRECT_VERSION = 'payment/paylane_general/redirect_version';
-    const XML_CONFIG_PENDING_ORDER_STATUS = 'payment/paylane_general/pending_order_status';
-    const XML_CONFIG_PERFORMED_ORDER_STATUS = 'payment/paylane_general/performed_order_status';
-    const XML_CONFIG_CLEARED_ORDER_STATUS = 'payment/paylane_general/cleared_order_status';
-    const XML_CONFIG_ERROR_ORDER_STATUS = 'payment/paylane_general/error_order_status';
+    const XML_CONFIG_PENDING_ORDER_STATUS = 'payment/paylane/pending_order_status';
+    const XML_CONFIG_PERFORMED_ORDER_STATUS = 'payment/paylane/performed_order_status';
+    const XML_CONFIG_CLEARED_ORDER_STATUS = 'payment/paylane/cleared_order_status';
+    const XML_CONFIG_ERROR_ORDER_STATUS = 'payment/paylane/error_order_status';
     const XML_CONFIG_FRAUD_CHECK = 'payment/paylane_creditcard/fraud_check';
     const XML_CONFIG_OVERWRITE_FRAUD_CHECK = 'payment/paylane_creditcard/fraud_check_overwrite';
     const XML_CONFIG_CREDIT_CARD_AUTHORIZATION_AMOUNT = 'payment/paylane_creditcard/authorization_amount';
@@ -22,6 +24,7 @@ class Endora_PayLane_Helper_Data extends Mage_Core_Helper_Data {
     const XML_CONFIG_OVERWRITE_AVS_CHECK_LEVEL = 'payment/paylane_creditcard/avs_check_level_overwrite';
     const XML_CONFIG_NOTIFICATIONS_USERNAME = 'payment/paylane_notifications/username';
     const XML_CONFIG_NOTIFICATIONS_PASSWORD = 'payment/paylane_notifications/password';
+    const XML_CONFIG_MODULE_ACTIVE = 'payment/paylane/active';
     
     const GATEWAY_TYPE_SECURE_FORM = 'secureForm';
     const GATEWAY_TYPE_API = 'API';
@@ -284,5 +287,27 @@ class Endora_PayLane_Helper_Data extends Mage_Core_Helper_Data {
         }
         
         return $result;
+    }
+    
+    /**
+     * Check whether module is active
+     * 
+     * @return boolean true/false
+     */
+    public function isActive()
+    {
+        return Mage::getStoreConfig(self::XML_CONFIG_MODULE_ACTIVE);
+    }
+    
+    public function isLogEnabled()
+    {
+        return Mage::getStoreConfig(self::XML_CONFIG_LOG_ENABLED);
+    }
+    
+    public function log($msg)
+    {
+        if($this->isLogEnabled()) {
+            Mage::log($msg, null, self::LOG_FILE_NAME);
+        }
     }
 }

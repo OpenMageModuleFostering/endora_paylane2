@@ -28,10 +28,15 @@ class Endora_PayLane_Model_Api_Payment_CreditCard extends Endora_PayLane_Model_A
             $data['customer'] = $this->_prepareCustomerData($order);
             $data['card'] = $paymentParams;
 
+            
+            $helper->log('send data for credit cart payment channel:');
+            $helper->log($data);
             $result = $client->cardSale($data);
+            $helper->log('Received response from PayLane:');
+            $helper->log($result);
         }
         
-        if($result['success']) {
+        if(!empty($result['success']) && $result['success']) {
             $orderStatus = $helper->getPerformedOrderStatus();
             $comment = $helper->__('Payment handled via PayLane module | Transaction ID: %s', $result['id_sale']);
             $order->setPaylaneSaleId($result['id_sale']);
@@ -46,7 +51,14 @@ class Endora_PayLane_Model_Api_Payment_CreditCard extends Endora_PayLane_Model_A
             $comment = $helper->__('There was an error in payment process via PayLane module (Error code: %s, Error text: %s)', $errorCode, $errorText);
         }
         
-        $order->setState($helper->getStateByStatus($orderStatus), $orderStatus, $comment, false);
+        $state = $helper->getStateByStatus($orderStatus);
+        
+        $helper->log('order data changing: ');
+        $helper->log('order status: ' .$orderStatus);
+        $helper->log('order state: ' .$state);
+        $helper->log('comment: ' . $comment);
+        
+        $order->setState($state, $orderStatus, $comment, false);
         $order->save();
         
         return $result['success'];
