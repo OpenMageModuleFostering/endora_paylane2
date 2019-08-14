@@ -9,7 +9,7 @@ class Endora_PayLane_Helper_Data extends Mage_Core_Helper_Data {
     const XML_CONFIG_LOG_ENABLED = 'payment/paylane/enable_log';
     const XML_CONFIG_SEND_CUSTOMER_DATA = 'payment/paylane_secureform/send_customer_data';
     const XML_CONFIG_MERCHANT_ID = 'payment/paylane_secureform/merchant_id';
-    const XML_CONFIG_HASH_SALT = 'payment/paylane_general/hash_salt';
+    const XML_CONFIG_HASH_SALT = 'payment/paylane_secureform/hash_salt';
     const XML_CONFIG_GATEWAY_TYPE = 'payment/paylane/gateway_type';
     const XML_CONFIG_REDIRECT_VERSION = 'payment/paylane_general/redirect_version';
     const XML_CONFIG_PENDING_ORDER_STATUS = 'payment/paylane/pending_order_status';
@@ -79,11 +79,7 @@ class Endora_PayLane_Helper_Data extends Mage_Core_Helper_Data {
     
     public function getHashSalt($paymentMethod = null)
     {
-        if(is_null($paymentMethod)) {
-            $hashSalt = Mage::getStoreConfig(self::XML_CONFIG_HASH_SALT);
-        } else {
-            $hashSalt = Mage::getStoreConfig($this->getPaymentMethodStoreConfigStringPrefix($paymentMethod).'/hash_salt');
-        }
+        $hashSalt = Mage::getStoreConfig(self::XML_CONFIG_HASH_SALT);
         
         return $hashSalt;
     }

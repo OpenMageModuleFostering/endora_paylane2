@@ -6,6 +6,7 @@
  */
 class Endora_PayLane_Model_Api_Payment_DirectDebit extends Endora_PayLane_Model_Api_Payment_Type_Abstract {
     const RETURN_URL_PATH = 'paylane/payment/externalUrlResponse';
+    const XML_CONFIG_MANDATE_ID = 'payment/paylane_directdebit/mandate_id';
     
     protected $_paymentTypeCode = 'directDebit';
     protected $_isRecurringPayment = true;
@@ -19,6 +20,7 @@ class Endora_PayLane_Model_Api_Payment_DirectDebit extends Endora_PayLane_Model_
         $data['customer'] = $this->_prepareCustomerData($order);
         $data['back_url'] = Mage::getUrl(self::RETURN_URL_PATH, array('_secure' => true));
         $data['account'] = $params;
+        $data['account']['mandate_id'] = Mage::getStoreConfig(self::XML_CONFIG_MANDATE_ID);
         
         $helper->log('send data for direct debit payment channel:');
         $helper->log($data);

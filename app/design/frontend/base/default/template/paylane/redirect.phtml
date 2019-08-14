@@ -7,6 +7,6 @@
  */
 ?>
 <html><body>
-<?php echo $this->getFormHtml(); ?>
+<?php echo $this->getFormHtml(); Mage::helper('paylane')->log('FORM HTML: '); Mage::helper('paylane')->log($this->getFormHtml()); ?>
 <script type="text/javascript">document.getElementById("paylane_checkout_secureform").submit();</script>
 </body></html>

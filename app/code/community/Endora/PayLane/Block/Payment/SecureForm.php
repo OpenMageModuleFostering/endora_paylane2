@@ -1,6 +1,6 @@
 <?php
 /**
- * Block to handle SOFORT Banking payment type
+ * Block to handle SecureForm Banking payment type
  *
  * @author Michał Zabielski <michal.zabielski@endora.pl> http://www.endora.pl
  */
