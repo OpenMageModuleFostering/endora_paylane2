@@ -127,14 +127,18 @@ class Endora_PayLane_PaymentController extends Mage_Core_Controller_Front_Action
         $success = false;
         $paymentType = $order->getPayment()->getAdditionalInformation('paylane_payment_type');
         
-        $id = '';
-        if($result['status'] != Endora_PayLane_Model_Payment::PAYMENT_STATUS_ERROR) {
-            $id = $result['id_sale'];
-        }
-        
-//        var_dump($result, $paymentType); die;
-        
         if($payment->verifyResponseHash($result, $paymentType)) {
+            if(($result['status'] != Endora_PayLane_Model_Payment::PAYMENT_STATUS_ERROR) && $result['id_3dsecure_auth']) { //only for 3DS
+                $cardModel = Mage::getModel('paylane/api_payment_creditCard');
+                $ds3Status = $cardModel->getClient()->saleBy3DSecureAuthorization(array ('id_3dsecure_auth' => $result['id_3dsecure_auth']));
+                if(!empty($ds3Status['success']) && $ds3Status['success']) {
+                    $result['status'] = Endora_PayLane_Model_Payment::PAYMENT_STATUS_CLEARED;
+                    $result['id_sale'] = $ds3Status['id_sale'];
+                } else {
+                    Endora_PayLane_Model_Payment::PAYMENT_STATUS_ERROR;
+                }
+            }
+            
             switch($result['status']) {
                 case Endora_PayLane_Model_Payment::PAYMENT_STATUS_CLEARED :
                         $orderStatus = $helper->getClearedOrderStatus();

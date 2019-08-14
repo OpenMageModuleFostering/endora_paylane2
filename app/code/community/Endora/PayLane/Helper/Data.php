@@ -25,6 +25,7 @@ class Endora_PayLane_Helper_Data extends Mage_Core_Helper_Data {
     const XML_CONFIG_NOTIFICATIONS_USERNAME = 'payment/paylane_notifications/username';
     const XML_CONFIG_NOTIFICATIONS_PASSWORD = 'payment/paylane_notifications/password';
     const XML_CONFIG_MODULE_ACTIVE = 'payment/paylane/active';
+    const XML_CONFIG_3DS_CHECK = 'payment/paylane_creditcard/ds3_check';
     
     const GATEWAY_TYPE_SECURE_FORM = 'secureForm';
     const GATEWAY_TYPE_API = 'API';
@@ -55,6 +56,11 @@ class Endora_PayLane_Helper_Data extends Mage_Core_Helper_Data {
     public function isFraudCheck()
     {
         return Mage::getStoreConfig(self::XML_CONFIG_FRAUD_CHECK);
+    }
+    
+    public function is3dsActive()
+    {
+        return Mage::getStoreConfig(self::XML_CONFIG_3DS_CHECK);
     }
     
     public function getRedirectVersion()
@@ -162,10 +168,6 @@ class Endora_PayLane_Helper_Data extends Mage_Core_Helper_Data {
                 'label' => 'T-Mobile Usługi Bankowe',
                 'img' => null
             ),
-            'MU' => array(
-                'label' => 'Multibank',
-                'img' => null
-            ),
             'MT' => array(
                 'label' => 'mTransfer',
                 'img' => null
@@ -216,6 +218,14 @@ class Endora_PayLane_Helper_Data extends Mage_Core_Helper_Data {
             ),
             'WB' => array(
                 'label' => 'Bank Zachodni WBK',
+                'img' => null
+            ),
+            'BG' => array(
+                'label' => 'Bank BGŻ BNP PARIBAS (BGŻ)',
+                'img' => null
+            ),
+            'PB' => array(
+                'label' => 'Bank BGŻ BNP PARIBAS (BNP)',
                 'img' => null
             ),
             'OH' => array(

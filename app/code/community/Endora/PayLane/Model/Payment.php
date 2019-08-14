@@ -92,7 +92,9 @@ class Endora_PayLane_Model_Payment extends Mage_Payment_Model_Method_Abstract
     {
         $id = null;
         
-        if(!empty($params['id_sale'])) {
+        if(!empty($params['id_3dsecure_auth'])) {
+            $id = $params['id_3dsecure_auth'];
+        } else if(!empty($params['id_sale'])) {
             $id = $params['id_sale'];
         } else if (!empty($params['id_authorization'])) {
             $id = $params['id_authorization'];

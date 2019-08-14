@@ -5,6 +5,7 @@
  * @author Michał Zabielski <michal.zabielski@endora.pl> http://www.endora.pl
  */
 class Endora_PayLane_Model_Api_Payment_CreditCard extends Endora_PayLane_Model_Api_Payment_Type_Abstract {
+    const RETURN_URL_PATH = 'paylane/payment/externalUrlResponse';
     
     protected $_paymentTypeCode = 'creditCard';
     protected $_isRecurringPayment = true;
@@ -28,18 +29,45 @@ class Endora_PayLane_Model_Api_Payment_CreditCard extends Endora_PayLane_Model_A
             $data['customer'] = $this->_prepareCustomerData($order);
             $data['card'] = $paymentParams;
 
-            
             $helper->log('send data for credit cart payment channel:');
+            
+            if($helper->is3dsActive()) {
+                $data['back_url'] = Mage::getUrl(self::RETURN_URL_PATH, array('_secure' => true));
+                $result = $client->checkCard3DSecure($data);
+            } else {
+                $result = $client->cardSale($data);
+            }
+            
             $helper->log($data);
-            $result = $client->cardSale($data);
             $helper->log('Received response from PayLane:');
             $helper->log($result);
         }
         
         if(!empty($result['success']) && $result['success']) {
-            $orderStatus = $helper->getPerformedOrderStatus();
-            $comment = $helper->__('Payment handled via PayLane module | Transaction ID: %s', $result['id_sale']);
-            $order->setPaylaneSaleId($result['id_sale']);
+            if(!empty($result['is_card_enrolled']) && $result['is_card_enrolled']) {
+                header('Location: ' . $result['redirect_url']);
+                die;
+            } else if(!empty($result['is_card_enrolled']) && $result['is_card_enrolled'] == false) {
+                $ds3Status = $client->saleBy3DSecureAuthorization(array ('id_3dsecure_auth' => $result['id_3dsecure_auth']));
+                if(!empty($ds3Status['success']) && $ds3Status['success']) {
+                    $orderStatus = $helper->getPerformedOrderStatus();
+                    $comment = $helper->__('Payment handled via PayLane module | Transaction ID: %s', $ds3Status['id_sale']);
+                    $order->setPaylaneSaleId($ds3Status['id_sale']);
+                } else {
+                    $orderStatus = $helper->getErrorOrderStatus();
+                    $errorCode = '';
+                    $errorText = '';
+                    if(!empty($ds3Status['error'])) {
+                        $errorCode = (!empty($ds3Status['error']['error_number'])) ? $ds3Status['error']['error_number'] : '';
+                        $errorText = (!empty($ds3Status['error']['error_description'])) ? $ds3Status['error']['error_description'] : '';
+                    }
+                    $comment = $helper->__('There was an error in payment process via PayLane module (Error code: %s, Error text: %s)', $errorCode, $errorText);
+                }
+            } else { //normal transaction, without 3DS
+                $orderStatus = $helper->getPerformedOrderStatus();
+                $comment = $helper->__('Payment handled via PayLane module | Transaction ID: %s', $result['id_sale']);
+                $order->setPaylaneSaleId($result['id_sale']);
+            }
         } else {
             $orderStatus = $helper->getErrorOrderStatus();
             $errorCode = '';
