@@ -9,7 +9,7 @@ class Endora_PayLane_Model_Source_Order_Status
         Mage_Sales_Model_Order::STATE_NEW,
         Mage_Sales_Model_Order::STATE_PENDING_PAYMENT,
         Mage_Sales_Model_Order::STATE_PROCESSING,
-//        Mage_Sales_Model_Order::STATE_COMPLETE,
+        Mage_Sales_Model_Order::STATE_COMPLETE,
         Mage_Sales_Model_Order::STATE_CLOSED,
         Mage_Sales_Model_Order::STATE_CANCELED,
         Mage_Sales_Model_Order::STATE_HOLDED,

@@ -310,4 +310,45 @@ class Endora_PayLane_Helper_Data extends Mage_Core_Helper_Data {
             Mage::log($msg, null, self::LOG_FILE_NAME);
         }
     }
+    
+    public function setOrderState($order, $status, $comment = null, $customerNotify = false)
+    {
+        if($status != Mage_Sales_Model_Order::STATE_COMPLETE) {
+            $order->setState($this->getStateByStatus($status), $status, $comment, $customerNotify);
+        } else {
+            /**
+             * To set order in "complete" state, there must be 
+             * created invoice and shipment (if product is not virtual)
+             */
+            $invoice = $order->prepareInvoice()
+                               ->setTransactionId($order->getId())
+                               ->addComment("Invoice created by PayLane payment module.")
+                               ->register()
+                               ->pay();
+
+            $transactionSave = Mage::getModel('core/resource_transaction')
+                                        ->addObject($invoice)
+                                        ->addObject($invoice->getOrder())
+                                        ->save();
+            
+            $shipment = $order->prepareShipment();
+            if( $shipment ) {
+                 $shipment->register();
+                 $order->setIsInProcess(true);
+
+                $transactionSave = Mage::getModel('core/resource_transaction')
+                                           ->addObject($shipment)
+                                           ->addObject($shipment->getOrder())
+                                           ->save();
+            }
+            
+            $history = $order->addStatusHistoryComment($comment, false);
+            $history->setIsCustomerNotified($customerNotify);
+            $history->save();
+        }
+        
+        $order->save();
+        
+        return $order;
+    }
 }

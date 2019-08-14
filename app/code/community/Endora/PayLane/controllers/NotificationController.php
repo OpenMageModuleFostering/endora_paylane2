@@ -29,14 +29,16 @@ class Endora_PayLane_NotificationController extends Mage_Core_Controller_Front_A
                                 && $order->getStatus() != $helper->getPerformedOrderStatus()) {
                             $orderStatus = $helper->getPerformedOrderStatus();
                             $comment = $helper->__('Order status changed via PayLane module');
-                            $order->setState($helper->getStateByStatus($orderStatus), $orderStatus, $comment, false);
+                            $helper->setOrderState($order, $orderStatus, $comment);
+//                            $order->setState($helper->getStateByStatus($orderStatus), $orderStatus, $comment, false);
                             $order->save();
                             $this->_log('Changed order status to: ' . $orderStatus . ', ('.Endora_PayLane_Model_Payment::PAYMENT_STATUS_PERFORMED.' in PayLane)');
                         } else if($result['status'] == Endora_PayLane_Model_Payment::PAYMENT_STATUS_CLEARED
                                 && $order->getStatus() != $helper->getClearedOrderStatus()) {
                             $orderStatus = $helper->getClearedOrderStatus();
                             $comment = $helper->__('Order status changed via PayLane module');
-                            $order->setState($helper->getStateByStatus($orderStatus), $orderStatus, $comment, false);
+                            $helper->setOrderState($order, $orderStatus, $comment);
+//                            $order->setState($helper->getStateByStatus($orderStatus), $orderStatus, $comment, false);
                             $order->save();
                             $this->_log('Changed order status to: ' . $orderStatus . ', ('.Endora_PayLane_Model_Payment::PAYMENT_STATUS_CLEARED.' in PayLane)');
                         } else {
@@ -150,7 +152,8 @@ class Endora_PayLane_NotificationController extends Mage_Core_Controller_Front_A
                     case Endora_PayLane_Helper_Notification::NOTIFICATION_TYPE_SALE :
                         $orderStatus = $helper->getClearedOrderStatus();
                         $comment = $helper->__('Order status changed via PayLane module');
-                        $order->setState($helper->getStateByStatus($orderStatus), $orderStatus, $comment, false);
+                        $helper->setOrderState($order, $orderStatus, $comment);
+//                        $order->setState($helper->getStateByStatus($orderStatus), $orderStatus, $comment, false);
                         $order->save();
                         $this->_log('Changed order status to: ' . $orderStatus . ', ('.Endora_PayLane_Model_Payment::PAYMENT_STATUS_CLEARED.' in PayLane)');
                         break;

@@ -45,14 +45,8 @@ class Endora_PayLane_Model_Api_Payment_Ideal extends Endora_PayLane_Model_Api_Pa
                 $errorText = (!empty($result['error']['error_description'])) ? $result['error']['error_description'] : '';
             }
             $comment = $helper->__('There was an error in payment process via PayLane module (Error code: %s, Error text: %s)', $errorCode, $errorText);
-            $state = $helper->getStateByStatus($orderStatus);
-        
-            $helper->log('order data changing: ');
-            $helper->log('order status: ' .$orderStatus);
-            $helper->log('order state: ' .$state);
-            $helper->log('comment: ' . $comment);
-            
-            $order->setState($state, $orderStatus, $comment, false);
+            $helper->setOrderState($order, $orderStatus, $comment);
+//            $order->setState($helper->getStateByStatus($orderStatus), $orderStatus, $comment, false);
             $order->save();
         }
         

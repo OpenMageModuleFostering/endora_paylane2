@@ -7,20 +7,6 @@
 class Endora_PayLane_Model_Observer {
     
     /**
-     * Setting payment type parameters to be used in
-     * payment type model
-     * 
-     * @param type $observer
-     */
-    public function preparePaymentTypeFormData($observer)
-    {   
-        $data = Mage::app()->getRequest()->getParams();
-        if(!empty($data['payment_params'])) {
-            Mage::getSingleton('checkout/session')->setData('payment_params', $data['payment_params']);
-        }
-    }
-    
-    /**
      * Cron job method that charge recurring profiles according
      * to their settings
      * 

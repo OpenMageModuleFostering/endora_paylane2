@@ -10,9 +10,7 @@ class Endora_PayLane_PaymentController extends Mage_Core_Controller_Front_Action
      * Controller for test purposes only
      */
     public function indexAction()
-    { 
-        $helper = Mage::helper('paylane');
-        
+    {   
         echo 'PaymentController | indexAction() works!'; die;
     }
     
@@ -24,7 +22,9 @@ class Endora_PayLane_PaymentController extends Mage_Core_Controller_Front_Action
                    ->getLastRealOrderId();
         $order = Mage::getModel('sales/order')
                    ->loadByIncrementId($lastOrderId);
-        $paymentType = $order->getPayment()->getAdditionalInformation('paylane_payment_type');
+        
+        $paymentParams = $order->getPayment()->getAdditionalInformation();
+        $paymentType = $paymentParams['paylane_payment_type'];
         
         $helper->log('Receive request for order #' . $lastOrderId);
         $helper->log('paymentType: ' . $paymentType);
@@ -32,18 +32,16 @@ class Endora_PayLane_PaymentController extends Mage_Core_Controller_Front_Action
         if($paymentType == Endora_PayLane_Helper_Data::GATEWAY_TYPE_SECURE_FORM) {
             $this->_redirect('paylane/payment/secureForm', array('_secure' => true));
         } else {
-            $paymentParams = Mage::getSingleton('checkout/session')->getData('payment_params');
+            unset($paymentParams['paylane_payment_type']);
             
             $helper->log('$paymentParams: ');
             $helper->log($paymentParams);
             
-            Mage::getSingleton('checkout/session')->unsetData('payment_params');
             $apiPayment = Mage::getModel('paylane/api_payment_' . $paymentType);
             $result = $apiPayment->handlePayment($order, $paymentParams);
             
-            $helper->log('result in PaymentController: ');
-            $helper->log('$result');
-
+            Mage::getSingleton('checkout/session')->unsetData('payment_params');
+            
             $this->_redirect($helper->getRedirectUrl(!$result), array('_secure' => true));
         }
     }
@@ -64,9 +62,6 @@ class Endora_PayLane_PaymentController extends Mage_Core_Controller_Front_Action
         $helper = Mage::helper('paylane');
         $payment = Mage::getModel('paylane/payment');
         $params = $this->getRequest()->getParams();
-        
-        $helper->log('Received response from PayLane:');
-        $helper->log($params);
         
         $error = false;
         $orderStatus = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
@@ -105,14 +100,8 @@ class Endora_PayLane_PaymentController extends Mage_Core_Controller_Front_Action
             $order->setPaylaneSaleId($transactionId);
         }
         
-        $state = $helper->getStateByStatus($orderStatus);
-        
-        $helper->log('order data changing: ');
-        $helper->log('order status: ' .$orderStatus);
-        $helper->log('order state: ' .$state);
-        $helper->log('comment: ' . $comment);
-
-        $order->setState($state, $orderStatus, $comment, false);
+        $helper->setOrderState($order, $orderStatus, $comment);
+//        $order->setState($helper->getStateByStatus($orderStatus), $orderStatus, $comment, false);
         $order->save();
         
         $this->_redirect($helper->getRedirectUrl($error), array('_secure' => true));
@@ -138,13 +127,12 @@ class Endora_PayLane_PaymentController extends Mage_Core_Controller_Front_Action
         $success = false;
         $paymentType = $order->getPayment()->getAdditionalInformation('paylane_payment_type');
         
-        $helper->log('Received response from PayLane:');
-        $helper->log($result);
-        
         $id = '';
         if($result['status'] != Endora_PayLane_Model_Payment::PAYMENT_STATUS_ERROR) {
             $id = $result['id_sale'];
         }
+        
+//        var_dump($result, $paymentType); die;
         
         if($payment->verifyResponseHash($result, $paymentType)) {
             switch($result['status']) {
@@ -186,14 +174,8 @@ class Endora_PayLane_PaymentController extends Mage_Core_Controller_Front_Action
             $comment = $helper->__('There was an error in payment process via PayLane module (hash verification failed)');
         }
         
-        $state = $helper->getStateByStatus($orderStatus);
-        
-        $helper->log('order data changing: ');
-        $helper->log('order status: ' .$orderStatus);
-        $helper->log('order state: ' .$state);
-        $helper->log('comment: ' . $comment);
-
-        $order->setState($state, $orderStatus, $comment, false);
+        $helper->setOrderState($order, $orderStatus, $comment);
+//        $order->setState($helper->getStateByStatus($orderStatus), $orderStatus, $comment, false);
         $order->save();
         
         $this->_redirect($helper->getRedirectUrl(!$success), array('_secure' => true));

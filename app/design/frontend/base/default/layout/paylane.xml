@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layout version="0.1.0">
+    <default>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>paylane/style.css</name></action>
+        </reference>
+    </default>
+    
     <paylane_payment_secureform>
         <reference name="root">
             <action method="setTemplate"><template>paylane/empty.phtml</template></action>
             <block type="paylane/redirect" name="paylane_redirect" template="paylane/redirect.phtml" />
         </reference>
     </paylane_payment_secureform>
-    
-    <checkout_onepage_index>
-        <reference name="head">
-            <action method="addItem"><type>skin_css</type><name>paylane/style.css</name></action>
-        </reference>
-    </checkout_onepage_index>
     
     <customer_account>
         <reference name="customer_account_navigation">

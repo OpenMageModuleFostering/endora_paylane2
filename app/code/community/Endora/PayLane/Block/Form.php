@@ -30,14 +30,32 @@ class Endora_PayLane_Block_Form extends Mage_Core_Block_Template {
         
         foreach ($classNames as $class) {
             $paymentClass = Mage::getModel('paylane/api_payment_'.$class);
-            $result[$paymentClass->getCode()] = array(
-                'label' => $paymentClass->getLabel(),
-                'img' => $paymentClass->getImageUrl(),
-                'recurring' => $paymentClass->isRecurringPayment()
-            );
+            
+            if($this->_isPaymentMethodActive($paymentClass->getCode())) {
+                $isRecurring = $this->_isRecurringItemInCart();
+                
+                if( ($isRecurring && $paymentClass->isRecurringPayment() === true) || !$isRecurring) {
+                    $result[$paymentClass->getCode()] = array(
+                        'label' => $paymentClass->getLabel(),
+                        'img' => $paymentClass->getImageUrl()
+                    );
+                }
+            }
         }
         
         return $result;
+    }
+    
+    /**
+     * Fetch payment template
+     * 
+     * @param string $paymentType Code of payment channel
+     * @return string Template HTML code
+     */
+    public function fetchPaymentTemplate($paymentType)
+    {
+        $templatePath = strtolower($paymentType);
+        echo $this->getLayout()->createBlock('paylane/payment_'.$paymentType)->setTemplate('paylane/payment/'.$templatePath.'.phtml')->toHtml();
     }
     
     /**
@@ -46,7 +64,7 @@ class Endora_PayLane_Block_Form extends Mage_Core_Block_Template {
      * @param string $code 
      * @return boolean
      */
-    public function isPaymentMethodActive($code)
+    protected function _isPaymentMethodActive($code)
     {
         return Mage::getStoreConfig($this->helper->getPaymentMethodStoreConfigStringPrefix($code) . '/active');
     }
@@ -56,7 +74,7 @@ class Endora_PayLane_Block_Form extends Mage_Core_Block_Template {
      * 
      * @return boolean
      */
-    public function isRecurringItemInCart()
+    protected function _isRecurringItemInCart()
     {
         $result = false;
         $cartItems = Mage::getSingleton('checkout/cart')->getItems();
@@ -70,5 +88,4 @@ class Endora_PayLane_Block_Form extends Mage_Core_Block_Template {
         
         return $result;
     }
-    
 }

@@ -262,7 +262,8 @@ class Endora_PayLane_Model_Payment extends Mage_Payment_Model_Method_Abstract
             $orderItem->setPrice( $profile->getTaxAmount() + $profile->getBillingAmount() + $profile->getShippingAmount() );
 
             $order = $profile->createOrder($orderItem);
-            $order->setState(Mage_Sales_Model_Order::STATE_NEW);
+            Mage::helper('paylane')->setOrderState($order, Mage_Sales_Model_Order::STATE_NEW);
+//            $order->setState(Mage_Sales_Model_Order::STATE_NEW);
             $transactionId = 'paylane-trans-' . uniqid();
             $payment = $order->getPayment();
             $payment->setTransactionId($transactionId)->setIsTransactionClosed(1);

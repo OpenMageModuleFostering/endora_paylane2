@@ -51,14 +51,13 @@ class Endora_PayLane_Model_Api_Payment_CreditCard extends Endora_PayLane_Model_A
             $comment = $helper->__('There was an error in payment process via PayLane module (Error code: %s, Error text: %s)', $errorCode, $errorText);
         }
         
-        $state = $helper->getStateByStatus($orderStatus);
-        
         $helper->log('order data changing: ');
         $helper->log('order status: ' .$orderStatus);
-        $helper->log('order state: ' .$state);
+        $helper->log('order state: ' .$helper->getStateByStatus($orderStatus));
         $helper->log('comment: ' . $comment);
         
-        $order->setState($state, $orderStatus, $comment, false);
+        $helper->setOrderState($order, $orderStatus, $comment);
+//        $order->setState($helper->getStateByStatus($orderStatus), $orderStatus, $comment, false);
         $order->save();
         
         return $result['success'];
