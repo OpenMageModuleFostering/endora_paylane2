@@ -47,18 +47,6 @@ class Endora_PayLane_Block_Form extends Mage_Core_Block_Template {
     }
     
     /**
-     * Fetch payment template
-     * 
-     * @param string $paymentType Code of payment channel
-     * @return string Template HTML code
-     */
-    public function fetchPaymentTemplate($paymentType)
-    {
-        $templatePath = strtolower($paymentType);
-        echo $this->getLayout()->createBlock('paylane/payment_'.$paymentType)->setTemplate('paylane/payment/'.$templatePath.'.phtml')->toHtml();
-    }
-    
-    /**
      * Check whether payment method is active
      * 
      * @param string $code 
