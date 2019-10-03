@@ -1,16 +1,19 @@
 {
-    "name": "OpenMageModuleFostering/Endora_PayLane2",
+    "name": "OpenMageModuleFostering\/Endora_PayLane2",
     "type": "magento-module",
     "license": "Massachusetts-Institute-of-Technology-License-(MITL)",
     "homepage": "",
     "description": "This extension allows you to add PayLane as a new payment method in Magento",
     "authors": [
-    {
-        "name": "ENDORA",
-        "email": "magento@endora.pl"
-    }
-],
+        {
+            "name": "ENDORA",
+            "email": "magento@endora.pl"
+        }
+    ],
     "suggest": {
-        "magento-hackathon/magento-composer-installer": "*"
-    }
+        "magento-hackathon\/magento-composer-installer": "*"
+    },
+    "keywords": [
+        "openmage-module"
+    ]
 }
